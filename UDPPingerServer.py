@@ -4,6 +4,7 @@ import random
 from socket import *
 
 # Create a UDP socket
+
 # Notice the use of SOCK_DGRAM for UDP packets
 serverSocket = socket(AF_INET, SOCK_DGRAM)
 
@@ -19,6 +20,8 @@ while True:
     message = message.upper()
     # If rand is less is than 4, we consider the packet lost and do not respond
     if rand < 4:
+        print("Request timed out")
+        # print the packet is lost
         continue
     # Otherwise, the server responds
     serverSocket.sendto(message, address)
