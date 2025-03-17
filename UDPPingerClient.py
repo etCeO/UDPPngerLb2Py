@@ -8,30 +8,44 @@ serverPort = 12000
 
 # Create a UDP socket
 clientSocket = socket(AF_INET, SOCK_DGRAM)
+# Set the timeout for receiving a response
+clientSocket.settimeout(1)
 
-# Define the message to send
+# Define the ping message
 message = b'ping'
 
-# Record the time when the message is sent
-rtt_start = time.time()
+for i in range(10):
+    # For all 10 pings
+    try:
+        # try this
+        # Record when the message is sent
+        rtt_start = time.time()
 
-# Send the ping message to the server
-clientSocket.sendto(message, (serverName, serverPort))
+        # Send the ping message to the server
+        clientSocket.sendto(message, (serverName, serverPort))
 
-# Receive the server's response
-response, serverAddress = clientSocket.recvfrom(1024)
+        # Receive server response
+        response, serverAddress = clientSocket.recvfrom(1024)
 
-# Record the time when the response is received
-rtt_end = time.time()
+        # Record the time when received
+        rtt_end = time.time()
 
-# Calculate the round trip time (RTT) in seconds
-rtt = (rtt_end - rtt_start)
+        # Calculate round trip time (RTT) in seconds
+        rtt = (rtt_end - rtt_start)
 
-# Print the response from the server
-print(f"Received from server: {response}")
+        # PING number
+        print(f"Ping {i + 1}...")
 
-# Print the round trip time
-print(f"RTT: {rtt} seconds")
+        # Print the server response
+        print(f"Received from server: {response}")
+
+        # Print the round trip time
+        print(f"RTT: {rtt} seconds")
+
+    except timeout:
+        # If there is a timeout
+        # Print where it happened
+        print(f"Ping {i+1} ... REquest TImed OuT")
 
 # Close the socket
 clientSocket.close()
