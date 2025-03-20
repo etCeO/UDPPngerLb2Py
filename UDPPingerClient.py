@@ -1,51 +1,39 @@
 # UDPPingerClient.py
-from socket import *
 import time
+import random
+from socket import *
 
-# Server address and port
-serverName = 'localhost'
+# Define server address and port
+serverName = '127.0.0.1'  # localhost
 serverPort = 12000
 
-# Create a UDP socket
+# Create UDP client socket
 clientSocket = socket(AF_INET, SOCK_DGRAM)
-# Set the timeout for receiving a response
+# Set timeout to 1 second
 clientSocket.settimeout(1)
 
-# Define the ping message
-message = b'ping'
-
-for i in range(10):
-    # For all 10 pings
+# Send 10 ping messages
+for sequence_number in range(1, 11):
+    # Get the current time
+    sendTime = time.time()
+    
+    # Format message to follow ASCII representation
+    message = "Ping " + str(sequence_number) + " " + str(sendTime)
+    
     try:
-        # try this
-        # Record when the message is sent
-        rtt_start = time.time()
-
-        # Send the ping message to the server
-        clientSocket.sendto(message, (serverName, serverPort))
-
-        # Receive server response
-        response, serverAddress = clientSocket.recvfrom(1024)
-
-        # Record the time when received
-        rtt_end = time.time()
-
-        # Calculate round trip time (RTT) in seconds
-        rtt = (rtt_end - rtt_start)
-
-        # PING number
-        print(f"Ping {i + 1}...")
-
-        # Print the server response
-        print(f"Received from server: {response}")
-
-        # Print the round trip time
-        print(f"RTT: {rtt} seconds")
-
+        # Send message to server
+        clientSocket.sendto(message.encode('ascii'), (serverName, serverPort))
+        
+        # Wait for response from server
+        response, _ = clientSocket.recvfrom(1024)
+        receiveTime = time.time()
+        RTT = receiveTime - sendTime
+        
+        # Print response and RTT
+        print(response.decode('ascii'), "RTT=", round(RTT, 6), "sec")
     except timeout:
-        # If there is a timeout
-        # Print where it happened
-        print(f"Ping {i+1} ... REquest TImed OuT")
+        # Handle timeout if no response received
+        print("Request timed out")
 
 # Close the socket
 clientSocket.close()
