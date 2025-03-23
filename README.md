@@ -9,7 +9,7 @@
 - Chapman Emails: etlopez@chapman.edu, thjohnson@chapman.edu, wmeyer@chapman.edu, kaboulhosn@chapman.edu
 - Course Number And Section: CPSC-353-04
 - Course Name: Data Communication and Computer Networks
-- Assignment Or Exercise Number: Lab 1: Web Server Lab
+- Assignment Or Exercise Number: Lab 2: UDP Pinger Lab
 
 ## ERRORS
 
